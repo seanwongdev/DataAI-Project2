@@ -1,0 +1,110 @@
+version: 2
+
+models:
+  - name: dim_customer
+    tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          min_value: 90000
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_unique_id
+        tests:
+          - not_null
+      - name: city
+        tests:
+          - not_null
+      - name: state
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
+
+  - name: dim_product
+    tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          min_value: 30000
+    columns:
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+      - name: category
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: weight_g
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              row_condition: "weight_g is not null"
+      - name: length_cm
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              row_condition: "length_cm is not null"
+      - name: height_cm
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              row_condition: "height_cm is not null"
+      - name: width_cm
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              row_condition: "width_cm is not null"
+
+  - name: dim_seller
+    tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          min_value: 3000
+    columns:
+      - name: seller_id
+        tests:
+          - unique
+          - not_null
+      - name: city
+        tests:
+          - not_null
+      - name: state
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
+
+  - name: dim_date
+    tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          min_value: 600
+    columns:
+      - name: order_date
+        tests:
+          - unique
+          - not_null
+      - name: year
+        tests:
+          - not_null
+          - accepted_values:
+              values: [2016, 2017, 2018]
+              quote: false
+      - name: month
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 12
+      - name: quarter
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 4
+      - name: day_of_week
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 7

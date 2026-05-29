@@ -1,0 +1,19 @@
+# dbt
+dbt/olist/target/
+dbt/olist/dbt_packages/
+dbt/olist/logs/
+dbt/logs/
+
+# Jupyter
+notebooks/.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Credentials (safety net)
+*.json
+service_account*.json

@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dbt and dependencies
         run: |
-          pip install dbt-bigquery==1.10.3
+          pip install dbt-core==1.10.9 dbt-bigquery==1.10.3
 
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v2
